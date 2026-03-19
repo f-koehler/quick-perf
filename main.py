@@ -68,11 +68,13 @@ def main(
         str(target),
     ] + arguments
 
+    process: subprocess.Popen[bytes] | None = None
     try:
         process = subprocess.Popen(cmd)
         process.wait()
     except KeyboardInterrupt:
-        process.wait()
+        if process is not None:
+            process.wait()
 
     cmd = ["perf", "script", f"--input={path_recording}"]
     path_processed.write_text(subprocess.check_output(cmd, text=True))
