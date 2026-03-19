@@ -69,9 +69,10 @@ def main(
     ] + arguments
 
     try:
-        subprocess.run(cmd)
+        process = subprocess.Popen(cmd)
+        process.wait()
     except KeyboardInterrupt:
-        pass
+        process.wait()
 
     cmd = ["perf", "script", f"--input={path_recording}"]
     path_processed.write_text(subprocess.check_output(cmd, text=True))
